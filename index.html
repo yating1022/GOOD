@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GOOD交易信息</title>
+    <style>
+        /* CSS样式 - 全部改为黑白主题 */
+        :root{
+            --primary:#000000;
+            --secondary:#333333;
+            --accent:#666666;
+            --light:#f8f8f8;
+            --dark:#212121;
+            --gray:#666666;
+            --success:#333333;
+            --transition:all 0.3s ease;
+            --card-bg:#ffffff;
+            --card-border:#e0e0e0;
+            --input-bg:#ffffff;
+            --table-header:#f0f0f0;
+            --table-row:#ffffff;
+            --hover-bg:#f5f5f5;
+            --shadow:0 2px 8px rgba(0,0,0,0.1)
+        }
+        
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+            -webkit-tap-highlight-color:transparent
+        }
+        
+        body{
+            line-height:1.6;
+            color:var(--dark);
+            background-color:var(--light);
+            padding:15px;
+            font-size:14px;
+            min-height:100vh
+        }
+        
+        .container{
+            max-width:100%;
+            margin:0 auto
+        }
+        
+        .login-section{
+            background:var(--card-bg);
+            border-radius:12px;
+            box-shadow:var(--shadow);
+            padding:20px;
+            margin-bottom:20px;
+            text-align:center;
+            border:1px solid var(--card-border)
+        }
+        
+        .login-title{
+            font-size:1.4rem;
+            color:var(--primary);
+            margin-bottom:10px;
+            font-weight:600
+        }
+        
+        .login-subtitle{
+            color:var(--gray);
+            margin-bottom:15px;
+            font-size:1rem
+        }
+        
+        .login-form{
+            display:flex;
+            flex-direction:column;
+            gap:12px;
+            margin-bottom:15px
+        }
+        
+        .login-input{
+            width:100%;
+            padding:12px 15px;
+            background-color:var(--input-bg);
+            border:1px solid #cccccc;
+            border-radius:8px;
+            font-size:1rem;
+            transition:var(--transition);
+            color:var(--dark)
+        }
+        
+        .login-input:focus{
+            outline:none;
+            border-color:var(--primary);
+            box-shadow:0 0 0 2px rgba(0,0,0,0.1)
+        }
+        
+        .login-input::placeholder{
+            color:#888888
+        }
+        
+        .login-hint{
+            margin-top:10px;
+            font-size:0.8rem;
+            color:var(--gray)
+        }
+        
+        .user-info{
+            background:var(--card-bg);
+            border-radius:12px;
+            box-shadow:var(--shadow);
+            padding:15px;
+            margin-bottom:15px;
+            text-align:center;
+            border:1px solid var(--card-border)
+        }
+        
+        .user-name{
+            font-size:1.1rem;
+            color:var(--primary);
+            margin-bottom:8px;
+            font-weight:600
+        }
+        
+        .user-id{
+            font-size:0.9rem;
+            color:var(--gray);
+            margin-bottom:5px
+        }
+        
+        .user-token{
+            font-size:0.8rem;
+            color:var(--gray);
+            word-break:break-all;
+            margin-top:5px
+        }
+        
+        .search-section{
+            background:var(--card-bg);
+            border-radius:12px;
+            box-shadow:var(--shadow);
+            padding:18px;
+            margin-bottom:20px;
+            border:1px solid var(--card-border)
+        }
+        
+        .search-title{
+            font-size:1.2rem;
+            margin-bottom:15px;
+            color:var(--dark);
+            font-weight:600
+        }
+        
+        .search-form{
+            display:flex;
+            gap:10px;
+            margin-bottom:10px
+        }
+        
+        .search-input{
+            flex:1;
+            padding:12px 15px;
+            background-color:var(--input-bg);
+            border:1px solid #cccccc;
+            border-radius:8px;
+            font-size:1rem;
+            transition:var(--transition);
+            color:var(--dark)
+        }
+        
+        .search-input:focus{
+            outline:none;
+            border-color:var(--primary);
+            box-shadow:0 0 0 2px rgba(0,0,0,0.1)
+        }
+        
+        .search-input::placeholder{
+            color:#888888
+        }
+        
+        .button-row{
+            display:flex;
+            gap:10px;
+            margin-top:10px;
+            flex-wrap:wrap
+        }
+        
+        .button-row .black-btn{
+            flex:1;
+            min-width:120px
+        }
+        
+        .dropdown-container{
+            position:relative;
+            margin-top:10px
+        }
+        
+        .goods-dropdown{
+            width:100%;
+            padding:12px 15px;
+            background-color:var(--input-bg);
+            border:1px solid #cccccc;
+            border-radius:8px;
+            font-size:1rem;
+            color:var(--dark);
+            appearance:none;
+            -webkit-appearance:none;
+            -moz-appearance:none;
+            cursor:pointer
+        }
+        
+        .goods-dropdown:focus{
+            outline:none;
+            border-color:var(--primary);
+            box-shadow:0 0 0 2px rgba(0,0,0,0.1)
+        }
+        
+        .dropdown-arrow{
+            position:absolute;
+            right:15px;
+            top:50%;
+            transform:translateY(-50%);
+            pointer-events:none;
+            color:var(--gray)
+        }
+        
+        .search-hint{
+            margin-top:10px;
+            font-size:0.8rem;
+            color:var(--gray)
+        }
+        
+        .query-status{
+            margin-top:10px;
+            font-size:0.8rem;
+            color:var(--primary);
+            text-align:center;
+            display:none
+        }
+        
+        header{
+            text-align:center;
+            margin-bottom:20px;
+            padding:15px;
+            background:var(--card-bg);
+            border-radius:12px;
+            box-shadow:var(--shadow);
+            position:relative;
+            border:1px solid var(--card-border)
+        }
+        
+        h1{
+            color:var(--primary);
+            margin-bottom:8px;
+            font-size:1.5rem;
+            font-weight:600
+        }
+        
+        .subtitle{
+            color:var(--gray);
+            font-size:1rem
+        }
+        
+        .current-goods{
+            margin-top:10px;
+            font-size:0.9rem;
+            color:var(--gray)
+        }
+        
+        .current-goods-name{
+            margin-top:5px;
+            font-size:0.9rem;
+            color:var(--primary);
+            font-weight:500
+        }
+        
+        .last-update{
+            margin-top:10px;
+            font-size:0.8rem;
+            color:var(--gray);
+            text-align:center
+        }
+        
+        .card{
+            background:var(--card-bg);
+            border-radius:12px;
+            box-shadow:var(--shadow);
+            padding:18px;
+            margin-bottom:20px;
+            border:1px solid var(--card-border)
+        }
+        
+        .card-title{
+            font-size:1.3rem;
+            margin-bottom:15px;
+            color:var(--dark);
+            border-bottom:2px solid var(--primary);
+            padding-bottom:8px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            font-weight:600
+        }
+        
+        .auto-refresh-toggle{
+            display:flex;
+            align-items:center;
+            gap:8px;
+            font-size:0.85rem
+        }
+        
+        .toggle-switch{
+            position:relative;
+            display:inline-block;
+            width:44px;
+            height:22px
+        }
+        
+        .toggle-switch input{
+            opacity:0;
+            width:0;
+            height:0
+        }
+        
+        .toggle-slider{
+            position:absolute;
+            cursor:pointer;
+            top:0;
+            left:0;
+            right:0;
+            bottom:0;
+            background-color:#cccccc;
+            transition:.4s;
+            border-radius:22px
+        }
+        
+        .toggle-slider:before{
+            position:absolute;
+            content:"";
+            height:16px;
+            width:16px;
+            left:3px;
+            bottom:3px;
+            background-color:white;
+            transition:.4s;
+            border-radius:50%
+        }
+        
+        input:checked+.toggle-slider{
+            background-color:var(--primary)
+        }
+        
+        input:checked+.toggle-slider:before{
+            transform:translateX(22px)
+        }
+        
+        .stats-grid{
+            display:grid;
+            grid-template-columns:repeat(2,1fr);
+            gap:12px;
+            margin-bottom:20px
+        }
+        
+        .stat-card{
+            background:var(--card-bg);
+            border-radius:10px;
+            padding:15px;
+            text-align:center;
+            box-shadow:var(--shadow);
+            transition:var(--transition);
+            position:relative;
+            border:1px solid var(--card-border)
+        }
+        
+        .stat-card.updated{
+            animation:highlight 1s ease
+        }
+        
+        @keyframes highlight{
+            0%{background-color:var(--card-bg)}
+            50%{background-color:rgba(0,0,0,0.05)}
+            100%{background-color:var(--card-bg)}
+        }
+        
+        .stat-value{
+            font-size:1.5rem;
+            font-weight:bold;
+            color:var(--primary);
+            margin-bottom:5px
+        }
+        
+        .stat-label{
+            color:var(--gray);
+            font-size:0.8rem
+        }
+        
+        table{
+            width:100%;
+            border-collapse:collapse;
+            margin-top:15px;
+            font-size:0.85rem
+        }
+        
+        th,td{
+            padding:10px 8px;
+            text-align:left;
+            border-bottom:1px solid #e0e0e0
+        }
+        
+        th{
+            background-color:var(--table-header);
+            font-weight:600;
+            color:var(--dark);
+            font-size:0.8rem
+        }
+        
+        tr{
+            background-color:var(--table-row)
+        }
+        
+        tr.updated{
+            animation:highlight 1s ease
+        }
+        
+        tr:hover{
+            background-color:var(--hover-bg)
+        }
+        
+        .price{
+            font-weight:bold;
+            color:var(--primary)
+        }
+        
+        .time{
+            color:var(--gray);
+            font-size:0.75rem
+        }
+        
+        .collection-code{
+            display:inline-block;
+            padding:3px 8px;
+            background-color:#f0f0f0;
+            border-radius:50px;
+            font-size:0.7rem;
+            color:var(--dark);
+            border:1px solid #e0e0e0
+        }
+        
+        .loading{
+            text-align:center;
+            padding:20px;
+            color:var(--gray)
+        }
+        
+        .loading-spinner{
+            display:inline-block;
+            width:18px;
+            height:18px;
+            border:2px solid rgba(0,0,0,0.1);
+            border-radius:50%;
+            border-top-color:var(--primary);
+            animation:spin 1s ease-in-out infinite;
+            margin-right:8px
+        }
+        
+        @keyframes spin{
+            to{transform:rotate(360deg)}
+        }
+        
+        .error{
+            text-align:center;
+            padding:20px;
+            color:var(--dark);
+            background-color:rgba(0,0,0,0.05);
+            border-radius:10px;
+            margin:20px 0;
+            font-size:0.9rem
+        }
+        
+        .refresh-btn{
+            display:inline-block;
+            padding:12px 24px;
+            background:linear-gradient(135deg,var(--primary),var(--secondary));
+            color:white;
+            border:none;
+            border-radius:8px;
+            cursor:pointer;
+            font-weight:600;
+            transition:var(--transition);
+            margin-bottom:15px;
+            font-size:1rem;
+            width:100%;
+            box-shadow:0 3px 10px rgba(0,0,0,0.1)
+        }
+        
+        .refresh-btn:active{
+            transform:scale(0.98);
+            background:linear-gradient(135deg,var(--secondary),var(--primary))
+        }
+        
+        footer{
+            text-align:center;
+            margin-top:25px;
+            padding:15px;
+            color:var(--gray);
+            border-top:1px solid #e0e0e0;
+            font-size:0.8rem
+        }
+        
+        .notification{
+            position:fixed;
+            top:20px;
+            left:50%;
+            transform:translateX(-50%);
+            background:linear-gradient(135deg,var(--primary),var(--secondary));
+            color:white;
+            padding:12px 20px;
+            border-radius:8px;
+            box-shadow:var(--shadow);
+            z-index:1000;
+            transition:all 0.3s ease;
+            max-width:90%;
+            text-align:center
+        }
+        
+        .hidden{
+            display:none
+        }
+        
+        @media(max-width:360px){
+            body{
+                padding:10px;
+                font-size:13px
+            }
+            
+            .stats-grid{
+                grid-template-columns:1fr
+            }
+            
+            th,td{
+                padding:8px 5px;
+                font-size:0.8rem
+            }
+            
+            .button-row{
+                flex-direction:column
+            }
+            
+            .button-row .black-btn{
+                width:100%
+            }
+        }
+        
+        @media(min-width:768px) and (orientation:landscape){
+            .stats-grid{
+                grid-template-columns:repeat(3,1fr)
+            }
+        }
+        
+        /* 链接样式也改为黑白 */
+        a{
+            color:var(--primary);
+            text-decoration:none
+        }
+        
+        a:hover{
+            text-decoration:underline
+        }
+        
+        .black-btn{
+            padding:12px 20px;
+            background:linear-gradient(135deg,var(--primary),var(--secondary));
+            color:white;
+            border:none;
+            border-radius:8px;
+            cursor:pointer;
+            font-weight:600;
+            transition:var(--transition);
+            white-space:nowrap
+        }
+        
+        .black-btn:active{
+            transform:scale(0.98);
+            background:linear-gradient(135deg,var(--secondary),var(--primary))
+        }
+        
+        .simple-link{
+            display:inline-block;
+            padding:10px 20px;
+            background:linear-gradient(135deg,var(--primary),var(--secondary));
+            color:white;
+            border:none;
+            border-radius:8px;
+            cursor:pointer;
+            font-weight:600;
+            transition:var(--transition);
+            margin-top:10px;
+            text-decoration:none;
+            text-align:center;
+            width:100%
+        }
+        
+        .simple-link:active{
+            transform:scale(0.98);
+            background:linear-gradient(135deg,var(--secondary),var(--primary))
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- GOOD平台登录界面 -->
+        <div class="login-section" id="login-section">
+            <h2 class="login-title">GOOD交易信息平台</h2>
+            <p class="login-subtitle">请输入平台Token查看交易记录</p>
+            <div class="login-form">
+                <input type="text" class="login-input" id="platform-token-input" placeholder="请输入平台Token">
+                <button class="black-btn" id="login-btn">进入平台</button>
+            </div>
+            <p class="login-hint">使用平台Token可直接查看交易记录</p>
+        </div>
+        
+        <!-- 主内容区域 -->
+        <div id="main-content" class="hidden">
+            <div class="search-section">
+                <h3 class="search-title">查看藏品交易记录</h3>
+                <div class="search-form">
+                    <input type="text" class="search-input" id="search-keyword-input" placeholder="请输入藏品全称或关键词">
+                </div>
+                
+                <div class="button-row">
+                    <button class="black-btn" id="search-goods-btn">搜索藏品</button>
+                    <button class="black-btn" id="all-goods-btn">查询所有藏品</button>
+                    <button class="black-btn" id="view-transaction-btn">查看交易记录</button>
+                </div>
+                
+                <div class="query-status" id="query-status">
+                    <span class="loading-spinner"></span>
+                    <span id="query-status-text">正在查询分区 0/200，已找到 0 个藏品</span>
+                    <button class="black-btn" id="stop-query-btn" style="margin-top:5px; padding:5px 10px; font-size:0.7rem">停止查询</button>
+                </div>
+                
+                <div class="dropdown-container" id="goods-dropdown-container">
+                    <select class="goods-dropdown" id="goods-dropdown">
+                        <option value="">请选中藏品点击查看交易记录</option>
+                    </select>
+                    <div class="dropdown-arrow">▼</div>
+                </div>
+                
+                <p class="search-hint">查询藏品关键词或选择藏品查看对应的成交记录</p>
+            </div>
+            
+            <header>
+                <h1>GOOD交易信息</h1>
+                <p class="subtitle">实时展示交易市场数据</p>
+                <div class="current-goods">当前藏品ID: <span id="current-goods-id">--</span></div>
+                <div class="current-goods-name">藏品名称: <span id="current-goods-name">--</span></div>
+                <div class="last-update">最后更新: <span id="last-update-time">--:--:--</span></div>
+            </header>
+            
+            <div class="stats-grid" id="stats-container"></div>
+            
+            <div class="card">
+                <h2 class="card-title">
+                    交易记录
+                    <div class="auto-refresh-toggle">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="auto-refresh-toggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span>自动刷新</span>
+                    </div>
+                </h2>
+                <button class="refresh-btn" id="refresh-btn">
+                    <i class="fas fa-sync-alt"></i> 立即刷新数据
+                </button>
+                <div id="table-container"></div>
+            </div>
+            
+            <footer>
+                <p>数据来源: GOOD交易平台 API</p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        (function(){
+            // 关键变量定义
+            const REFRESH_INTERVAL = 15000;
+            // 使用GOOD的API域名
+            const API_URL = 'https://api.goodcollext.com/api/market/trade/tradingInformation';
+            const MARKET_LIST_API_URL = 'https://api.goodcollext.com/api/market/market/getMarketList';
+            
+            // 用户信息
+            let userToken = ''; // 这里存储平台Token
+            
+            // 藏品名称映射 - 初始为空，根据API返回的数据动态更新
+            const GOODS_NAME_MAP = {
+                '5': "《Good夺宝卡》" // 从交易记录中已知的藏品
+            };
+            
+            let autoRefreshEnabled = true;
+            let refreshInterval;
+            let currentGoodsId = "";
+            let marketGoodsList = []; // 存储从API获取的藏品列表
+            let isGoodsListLoaded = false; // 标记是否已加载藏品列表
+            let isQueryingAllGoods = false; // 标记是否正在查询所有藏品
+            let queryAllGoodsController = null; // 控制查询中断
+            
+            // 存储键名
+            const STORAGE_KEYS = {
+                PLATFORM_TOKEN: 'good_platform_token'
+            };
+            
+            // 显示通知
+            function showNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.className = 'notification';
+                let icon = 'info-circle';
+                
+                notification.innerHTML = `<i class="fas fa-${icon}"></i> ${message}`;
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 300);
+                }, 3000);
+            }
+            
+            // 登录GOOD平台（使用平台Token）
+            function loginWithPlatformToken() {
+                const tokenInput = document.getElementById('platform-token-input');
+                const token = tokenInput.value.trim();
+                
+                if (!token) {
+                    showNotification('请输入平台Token');
+                    return;
+                }
+                
+                // 保存Token到本地存储
+                userToken = token;
+                localStorage.setItem(STORAGE_KEYS.PLATFORM_TOKEN, token);
+                
+                showNotification('登录成功，正在跳转...');
+                
+                // 隐藏登录界面，显示主内容
+                setTimeout(() => {
+                    document.getElementById('login-section').classList.add('hidden');
+                    document.getElementById('main-content').classList.remove('hidden');
+                    
+                    // 自动查询所有藏品
+                    setTimeout(() => {
+                        showAllGoods();
+                    }, 500);
+                    
+                    // 启动自动刷新
+                    startAutoRefresh();
+                }, 1000);
+            }
+            
+            // 获取藏品名称
+            function getGoodsName(goodsId) {
+                return GOODS_NAME_MAP[goodsId] || `藏品 ${goodsId}`;
+            }
+            
+            // 更新藏品名称映射
+            function updateGoodsNameMap(goodsId, goodsName) {
+                if (goodsId && goodsName) {
+                    GOODS_NAME_MAP[goodsId] = goodsName;
+                    console.log(`已更新藏品名称映射: ${goodsId} -> ${goodsName}`);
+                }
+            }
+            
+            // 获取指定分区的藏品列表
+            async function fetchMarketGoodsListBySeriesId(seriesId, goodsType = 2) {
+                try {
+                    // 使用平台Token
+                    if (!userToken) {
+                        throw new Error('请先输入平台Token');
+                    }
+                    
+                    const API_TOKEN = userToken;
+                    
+                    // 构造请求体 - 根据API文档
+                    const requestBody = {
+                        "goods_type": goodsType,
+                        "page": 1,
+                        "list_rows": 100, // 获取更多藏品
+                        "series_id": seriesId,
+                        "add_deal_num": true,
+                        "new": 1,
+                        "price": null
+                    };
+                    
+                    const response = await fetch(MARKET_LIST_API_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'token': API_TOKEN,
+                            'version': '1.0.0',
+                            'Host': 'api.goodcollext.com',
+                            'Origin': 'https://h5.goodcollext.com',
+                            'Referer': 'https://h5.goodcollext.com/'
+                        },
+                        body: JSON.stringify(requestBody)
+                    });
+                    
+                    if (!response.ok) {
+                        if (response.status === 401) {
+                            // Token无效，清除本地存储的token
+                            localStorage.removeItem(STORAGE_KEYS.PLATFORM_TOKEN);
+                            throw new Error('平台Token已失效，请重新输入');
+                        }
+                        throw new Error(`HTTP错误! 状态: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    
+                    if (data.code === 1 && data.data && Array.isArray(data.data)) {
+                        return data.data;
+                    } else {
+                        // 如果返回错误或空数据，返回空数组
+                        return [];
+                    }
+                    
+                } catch(error) {
+                    console.error(`获取分区 ${seriesId} 的藏品列表失败:`, error);
+                    // 如果是token失效，显示重新登录提示
+                    if (error.message.includes('Token已失效')) {
+                        showNotification(error.message);
+                        // 跳转回登录界面
+                        document.getElementById('main-content').classList.add('hidden');
+                        document.getElementById('login-section').classList.remove('hidden');
+                    }
+                    // 出错也返回空数组，不影响其他分区查询
+                    return [];
+                }
+            }
+            
+            // 更新查询状态显示
+            function updateQueryStatus(currentSeries, maxSeries, foundCount) {
+                const queryStatus = document.getElementById('query-status');
+                const queryStatusText = document.getElementById('query-status-text');
+                
+                if (queryStatus && queryStatusText) {
+                    queryStatus.style.display = 'block';
+                    queryStatusText.innerHTML = `<span class="loading-spinner"></span> 正在查询分区 ${currentSeries}/${maxSeries}，已找到 ${foundCount} 个藏品`;
+                }
+            }
+            
+            // 停止查询所有藏品
+            function stopQueryAllGoods() {
+                if (isQueryingAllGoods && queryAllGoodsController) {
+                    queryAllGoodsController.abort();
+                    isQueryingAllGoods = false;
+                    
+                    const queryStatus = document.getElementById('query-status');
+                    if (queryStatus) {
+                        queryStatus.style.display = 'none';
+                    }
+                    
+                    const allGoodsBtn = document.getElementById('all-goods-btn');
+                    if (allGoodsBtn) {
+                        allGoodsBtn.disabled = false;
+                        allGoodsBtn.innerHTML = '查询所有藏品';
+                    }
+                    
+                    showNotification('已停止查询所有藏品');
+                }
+            }
+            
+            // 获取所有分区的藏品列表（支持中断）
+            async function fetchAllMarketGoods() {
+                // 如果已经在查询，先停止
+                if (isQueryingAllGoods) {
+                    stopQueryAllGoods();
+                    return;
+                }
+                
+                const allGoodsBtn = document.getElementById('all-goods-btn');
+                const searchBtn = document.getElementById('search-goods-btn');
+                const viewTransactionBtn = document.getElementById('view-transaction-btn');
+                
+                // 设置查询状态
+                isQueryingAllGoods = true;
+                
+                // 创建AbortController用于中断查询
+                queryAllGoodsController = new AbortController();
+                
+                // 禁用按钮并显示加载状态
+                if (allGoodsBtn) {
+                    allGoodsBtn.disabled = false;
+                    allGoodsBtn.innerHTML = '停止查询';
+                }
+                if (searchBtn) searchBtn.disabled = true;
+                if (viewTransactionBtn) viewTransactionBtn.disabled = true;
+                
+                try {
+                    let allGoods = [];
+                    const maxSeriesId = 200;
+                    let emptySeriesCount = 0;
+                    const maxEmptySeriesCount = 10;
+                    
+                    // 清空现有藏品列表
+                    marketGoodsList = [];
+                    isGoodsListLoaded = false;
+                    
+                    // 清空下拉框（保留第一个选项）
+                    const dropdown = document.getElementById('goods-dropdown');
+                    if (dropdown) {
+                        dropdown.innerHTML = '<option value="">请选中藏品点击查看交易记录</option>';
+                    }
+                    
+                    // 显示查询状态
+                    const dropdownContainer = document.getElementById('goods-dropdown-container');
+                    if (dropdownContainer) dropdownContainer.classList.remove('hidden');
+                    
+                    // 开始遍历分区
+                    for (let seriesId = 0; seriesId <= maxSeriesId; seriesId++) {
+                        // 检查是否被中断
+                        if (queryAllGoodsController.signal.aborted) {
+                            console.log('查询已被中断');
+                            break;
+                        }
+                        
+                        // 更新查询状态
+                        updateQueryStatus(seriesId, maxSeriesId, allGoods.length);
+                        
+                        let seriesHasGoods = false;
+                        
+                        // 检查是否已选择藏品，如果选择了则停止查询
+                        const dropdownValue = document.getElementById('goods-dropdown').value;
+                        if (dropdownValue && dropdownValue !== "") {
+                            console.log('用户已选择藏品，停止查询');
+                            break;
+                        }
+                        
+                        // 尝试不同的 goods_type
+                        const goodsTypes = [1, 2, 3, 4, 5];
+                        
+                        for (const goodsType of goodsTypes) {
+                            // 检查是否被中断
+                            if (queryAllGoodsController.signal.aborted) {
+                                break;
+                            }
+                            
+                            try {
+                                const goodsList = await fetchMarketGoodsListBySeriesId(seriesId, goodsType);
+                                
+                                if (goodsList.length > 0) {
+                                    seriesHasGoods = true;
+                                    emptySeriesCount = 0;
+                                    
+                                    // 添加藏品到总列表，同时去重
+                                    goodsList.forEach(item => {
+                                        const existingIndex = allGoods.findIndex(g => g.id === item.id);
+                                        if (existingIndex === -1) {
+                                            allGoods.push(item);
+                                            
+                                            // 更新藏品名称映射
+                                            updateGoodsNameMap(item.id, item.name);
+                                        }
+                                    });
+                                    
+                                    // 实时更新下拉框
+                                    if (goodsList.length > 0) {
+                                        // 将新发现的藏品添加到下拉框
+                                        const newGoods = goodsList.filter(item => 
+                                            !marketGoodsList.some(g => g.id === item.id)
+                                        );
+                                        
+                                        if (newGoods.length > 0) {
+                                            // 更新全局藏品列表
+                                            marketGoodsList = [...marketGoodsList, ...newGoods];
+                                            
+                                            // 实时更新下拉框
+                                            updateGoodsDropdownIncremental(newGoods);
+                                        }
+                                    }
+                                }
+                            } catch(error) {
+                                console.error(`查询分区 ${seriesId}，类型 ${goodsType} 失败:`, error);
+                            }
+                        }
+                        
+                        if (!seriesHasGoods) {
+                            emptySeriesCount++;
+                            if (emptySeriesCount >= maxEmptySeriesCount) {
+                                console.log(`连续${maxEmptySeriesCount}个分区没有藏品，停止查询`);
+                                break;
+                            }
+                        }
+                        
+                        // 添加一点延迟，避免请求过快
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                    }
+                    
+                    // 存储到全局变量
+                    marketGoodsList = allGoods;
+                    isGoodsListLoaded = true;
+                    isQueryingAllGoods = false;
+                    
+                    // 显示查询结果
+                    const totalGoods = allGoods.length;
+                    console.log(`共查询到 ${totalGoods} 个藏品`);
+                    
+                    // 隐藏查询状态
+                    const queryStatus = document.getElementById('query-status');
+                    if (queryStatus) {
+                        queryStatus.style.display = 'none';
+                    }
+                    
+                    if (totalGoods > 0) {
+                        showNotification(`已查询所有分区，共找到 ${totalGoods} 个藏品`);
+                    } else {
+                        showNotification('未找到任何藏品');
+                    }
+                    
+                } catch(error) {
+                    console.error('获取所有分区藏品列表失败:', error);
+                    if (!queryAllGoodsController.signal.aborted) {
+                        showNotification('获取藏品列表失败: ' + error.message);
+                    }
+                } finally {
+                    // 恢复按钮状态
+                    isQueryingAllGoods = false;
+                    
+                    if (allGoodsBtn) {
+                        allGoodsBtn.disabled = false;
+                        allGoodsBtn.innerHTML = '查询所有藏品';
+                    }
+                    if (searchBtn) searchBtn.disabled = false;
+                    if (viewTransactionBtn) viewTransactionBtn.disabled = false;
+                    
+                    // 隐藏查询状态
+                    const queryStatus = document.getElementById('query-status');
+                    if (queryStatus) {
+                        queryStatus.style.display = 'none';
+                    }
+                }
+            }
+            
+            // 增量更新藏品下拉框
+            function updateGoodsDropdownIncremental(newGoodsList) {
+                const dropdown = document.getElementById('goods-dropdown');
+                if (!dropdown) return;
+                
+                // 按名称排序新发现的藏品
+                const sortedNewGoods = newGoodsList.sort((a, b) => {
+                    const nameA = a.name || '';
+                    const nameB = b.name || '';
+                    return nameA.localeCompare(nameB, 'zh-CN');
+                });
+                
+                // 添加新发现的藏品到下拉框
+                sortedNewGoods.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.id;
+                    option.textContent = `${item.name} (ID: ${item.id})`;
+                    option.setAttribute('data-goods-name', item.name);
+                    dropdown.appendChild(option);
+                });
+            }
+            
+            // 搜索藏品
+            async function searchGoods() {
+                const keywordInput = document.getElementById('search-keyword-input');
+                const keyword = keywordInput.value.trim();
+                
+                // 如果还没有加载过藏品列表，先加载
+                if (!isGoodsListLoaded || marketGoodsList.length === 0) {
+                    showNotification('请先查询所有藏品获取藏品列表');
+                    return;
+                }
+                
+                let searchResults = [];
+                
+                if (keyword) {
+                    // 执行搜索
+                    searchResults = marketGoodsList.filter(item => {
+                        // 搜索ID或名称
+                        const idStr = String(item.id);
+                        const nameStr = item.name || '';
+                        const keywordLower = keyword.toLowerCase();
+                        
+                        return idStr.includes(keyword) || 
+                               nameStr.toLowerCase().includes(keywordLower);
+                    });
+                    
+                    // 更新下拉框
+                    updateGoodsDropdown(searchResults);
+                    
+                    const dropdownContainer = document.getElementById('goods-dropdown-container');
+                    if (searchResults.length > 0) {
+                        showNotification(`找到 ${searchResults.length} 个匹配的藏品`);
+                        if (dropdownContainer) dropdownContainer.classList.remove('hidden');
+                    } else {
+                        showNotification('未找到匹配的藏品');
+                        if (dropdownContainer) dropdownContainer.classList.add('hidden');
+                    }
+                } else {
+                    showNotification('请输入搜索关键词');
+                }
+            }
+            
+            // 显示所有藏品
+            function showAllGoods() {
+                fetchAllMarketGoods();
+            }
+            
+            // 更新藏品下拉框（完全替换）
+            function updateGoodsDropdown(goodsList) {
+                const dropdown = document.getElementById('goods-dropdown');
+                if (!dropdown) return;
+                
+                // 清空现有选项（保留第一个选项）
+                dropdown.innerHTML = '<option value="">请选中藏品点击查看交易记录</option>';
+                
+                // 添加搜索结果（按名称排序）
+                const sortedGoodsList = goodsList.sort((a, b) => {
+                    const nameA = a.name || '';
+                    const nameB = b.name || '';
+                    return nameA.localeCompare(nameB, 'zh-CN');
+                });
+                
+                sortedGoodsList.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.id;
+                    
+                    // 只显示藏品名称和ID
+                    option.textContent = `${item.name} (ID: ${item.id})`;
+                    option.setAttribute('data-goods-name', item.name);
+                    dropdown.appendChild(option);
+                });
+            }
+            
+            // 处理下拉框选择
+            function handleGoodsSelect() {
+                const dropdown = document.getElementById('goods-dropdown');
+                const selectedId = dropdown ? dropdown.value : '';
+                
+                if (selectedId) {
+                    // 找到选中的藏品
+                    const selectedGoods = marketGoodsList.find(item => String(item.id) === selectedId);
+                    
+                    if (selectedGoods) {
+                        // 更新藏品名称映射
+                        updateGoodsNameMap(selectedId, selectedGoods.name);
+                        
+                        showNotification(`已选择藏品: ${selectedGoods.name}`);
+                        
+                        // 如果正在查询所有藏品，则停止查询
+                        if (isQueryingAllGoods) {
+                            stopQueryAllGoods();
+                        }
+                    }
+                }
+            }
+            
+            // 更新藏品信息显示
+            function updateGoodsInfo(goodsData) {
+                const goodsName = getGoodsName(currentGoodsId);
+                const goodsNameElement = document.getElementById('current-goods-name');
+                if (goodsNameElement) {
+                    goodsNameElement.textContent = goodsName;
+                }
+            }
+            
+            // 获取交易数据
+            async function fetchRealData() {
+                const refreshBtn = document.getElementById('refresh-btn');
+                if (refreshBtn) {
+                    refreshBtn.innerHTML = '<span class="loading-spinner"></span> 加载中...';
+                    refreshBtn.disabled = true;
+                }
+                
+                try {
+                    if (!currentGoodsId) throw new Error('请先选择藏品ID');
+                    
+                    // 使用平台Token
+                    if (!userToken) {
+                        throw new Error('请先输入平台Token');
+                    }
+                    
+                    const API_TOKEN = userToken;
+                    
+                    // 根据API文档构造请求体
+                    const requestBody = {
+                        "status": 1,
+                        "page": 1,
+                        "goods_id": currentGoodsId
+                    };
+                    
+                    const response = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'token': API_TOKEN,
+                            'version': '1.0.1',
+                            'Host': 'api.goodcollext.com',
+                            'Origin': 'https://h5.goodcollext.com',
+                            'Referer': 'https://h5.goodcollext.com/'
+                        },
+                        body: JSON.stringify(requestBody)
+                    });
+                    
+                    if (!response.ok) {
+                        if (response.status === 401) {
+                            // Token无效，清除本地存储的token
+                            localStorage.removeItem(STORAGE_KEYS.PLATFORM_TOKEN);
+                            throw new Error('平台Token已失效，请重新输入');
+                        }
+                        throw new Error(`HTTP错误! 状态: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    
+                    console.log('API返回数据:', data); // 调试信息
+                    
+                    if (data.code === 1) {
+                        // 更新当前藏品ID显示
+                        const goodsIdElement = document.getElementById('current-goods-id');
+                        if (goodsIdElement) {
+                            goodsIdElement.textContent = currentGoodsId;
+                        }
+                        
+                        // 更新藏品信息显示
+                        updateGoodsInfo(data.data);
+                        
+                        // 渲染数据
+                        renderStats(data);
+                        renderTable(data);
+                        
+                        const now = new Date();
+                        const updateTimeElement = document.getElementById('last-update-time');
+                        if (updateTimeElement) {
+                            updateTimeElement.textContent = now.toLocaleTimeString();
+                        }
+                        showNotification(`藏品 ${currentGoodsId} 数据已更新`);
+                    } else {
+                        throw new Error(data.msg || 'API返回错误');
+                    }
+                    
+                } catch(error) {
+                    console.error('获取数据失败:', error);
+                    showNotification('获取数据失败: ' + error.message);
+                    
+                    // 如果是token失效，跳转回登录界面
+                    if (error.message.includes('Token已失效')) {
+                        document.getElementById('main-content').classList.add('hidden');
+                        document.getElementById('login-section').classList.remove('hidden');
+                    }
+                    
+                    const tableContainer = document.getElementById('table-container');
+                    if (tableContainer) {
+                        tableContainer.innerHTML = `<div class="error">获取数据失败: ${error.message}</div>`;
+                    }
+                } finally {
+                    if (refreshBtn) {
+                        refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> 立即刷新数据';
+                        refreshBtn.disabled = false;
+                    }
+                }
+            }
+            
+            // 渲染统计信息 - 根据实际API响应进行调整
+            function renderStats(data) {
+                const statsContainer = document.getElementById('stats-container');
+                if (!statsContainer) return;
+                
+                const statsData = data.data;
+                const list = statsData.list || [];
+                
+                console.log('统计数据:', statsData); // 调试信息
+                
+                // 从API响应中提取数据
+                // 今日成交量
+                const todayVolume = statsData.today_volume || 0;
+                
+                // 今日最高价
+                const todayHighestPrice = statsData.today_highest_price || '0.00';
+                
+                // 今日最低价
+                const todayLowestPrice = statsData.today_lowest_price || '0.00';
+                
+                // 今日成交额
+                const todayAmount = statsData.today_amount || 0;
+                
+                // 交易记录数
+                const transactionRecordNumber = statsData.transaction_record_number || list.length || 0;
+                
+                // 计算1小时成交量
+                let oneHourVolume = 0;
+                if (list && list.length > 0) {
+                    const now = Math.floor(Date.now() / 1000); // 当前时间戳(秒)
+                    const oneHourAgo = now - 3600; // 1小时前的时间戳
+                    
+                    // 计算最近1小时内的成交量
+                    oneHourVolume = list.filter(item => {
+                        const timeRaw = item.time_raw || 0;
+                        return timeRaw >= oneHourAgo;
+                    }).length;
+                }
+                
+                // 计算平均价格
+                let averagePrice = '0.00';
+                if (todayVolume > 0 && todayAmount > 0) {
+                    averagePrice = (todayAmount / todayVolume).toFixed(2);
+                }
+                
+                statsContainer.innerHTML = `
+                    <div class="stat-card" id="stat-volume">
+                        <div class="stat-value">${todayVolume}</div>
+                        <div class="stat-label">今日成交量</div>
+                    </div>
+                    <div class="stat-card" id="stat-hour-volume">
+                        <div class="stat-value">${oneHourVolume}</div>
+                        <div class="stat-label">1小时成交量</div>
+                    </div>
+                    <div class="stat-card" id="stat-high">
+                        <div class="stat-value">¥${todayHighestPrice}</div>
+                        <div class="stat-label">今日最高价</div>
+                    </div>
+                    <div class="stat-card" id="stat-low">
+                        <div class="stat-value">¥${todayLowestPrice}</div>
+                        <div class="stat-label">今日最低价</div>
+                    </div>
+                    <div class="stat-card" id="stat-amount">
+                        <div class="stat-value">¥${todayAmount}</div>
+                        <div class="stat-label">今日成交额</div>
+                    </div>
+                    <div class="stat-card" id="stat-records">
+                        <div class="stat-value">${transactionRecordNumber}</div>
+                        <div class="stat-label">交易记录数</div>
+                    </div>
+                    <div class="stat-card" id="stat-average">
+                        <div class="stat-value">¥${averagePrice}</div>
+                        <div class="stat-label">平均价格</div>
+                    </div>
+                `;
+                
+                // 添加高亮动画
+                setTimeout(() => {
+                    const statCards = document.querySelectorAll('.stat-card');
+                    statCards.forEach(card => {
+                        card.classList.add('updated');
+                        setTimeout(() => {
+                            card.classList.remove('updated');
+                        }, 1000);
+                    });
+                }, 100);
+            }
+            
+            // 渲染表格
+            function renderTable(data) {
+                const tableContainer = document.getElementById('table-container');
+                if (!tableContainer) return;
+                
+                const list = data.data.list;
+                
+                if (!list || list.length === 0) {
+                    tableContainer.innerHTML = '<div class="error">暂无交易记录</div>';
+                    return;
+                }
+                
+                // 获取当前藏品名称
+                const currentGoodsName = getGoodsName(currentGoodsId);
+                
+                let tableHTML = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>藏品信息</th>
+                                <th>价格</th>
+                                <th>编号</th>
+                                <th>时间</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                list.forEach((item) => {
+                    // 使用查询到的藏品名称
+                    const goodsName = item.goods_name || currentGoodsName;
+                    
+                    tableHTML += `
+                        <tr>
+                            <td>
+                                <div>
+                                    <div style="font-weight:500;margin-bottom:3px">${goodsName}</div>
+                                    <div style="font-size:0.7rem;color:#666666">藏品ID: ${item.user_collection_id || '--'}</div>
+                                </div>
+                            </td>
+                            <td class="price">¥${item.price || '0.00'}</td>
+                            <td><span class="collection-code">${item.collection_code || '--'}</span></td>
+                            <td class="time">${item.time || '--'}</td>
+                        </tr>
+                    `;
+                });
+                
+                tableHTML += '</tbody></table>';
+                tableContainer.innerHTML = tableHTML;
+            }
+            
+            // 查看交易记录
+            function viewTransaction() {
+                const dropdown = document.getElementById('goods-dropdown');
+                const selectedId = dropdown ? dropdown.value : '';
+                
+                if (!selectedId || selectedId === "") {
+                    showNotification('请先选择一个藏品');
+                    return;
+                }
+                
+                currentGoodsId = selectedId;
+                
+                // 更新当前藏品ID显示
+                const goodsIdElement = document.getElementById('current-goods-id');
+                if (goodsIdElement) {
+                    goodsIdElement.textContent = currentGoodsId;
+                }
+                
+                // 更新藏品名称显示
+                const goodsNameElement = document.getElementById('current-goods-name');
+                if (goodsNameElement) {
+                    const goodsName = getGoodsName(currentGoodsId);
+                    goodsNameElement.textContent = goodsName;
+                }
+                
+                // 如果正在查询所有藏品，则停止查询
+                if (isQueryingAllGoods) {
+                    stopQueryAllGoods();
+                }
+                
+                fetchRealData();
+            }
+            
+            // 自动刷新控制
+            function startAutoRefresh() {
+                if (refreshInterval) clearInterval(refreshInterval);
+                refreshInterval = setInterval(() => {
+                    if (autoRefreshEnabled && currentGoodsId) {
+                        fetchRealData();
+                    }
+                }, REFRESH_INTERVAL);
+            }
+            
+            function stopAutoRefresh() {
+                if (refreshInterval) {
+                    clearInterval(refreshInterval);
+                    refreshInterval = null;
+                }
+            }
+            
+            // 初始化
+            function init() {
+                // 检查是否有保存的平台Token
+                const savedToken = localStorage.getItem(STORAGE_KEYS.PLATFORM_TOKEN);
+                
+                if (savedToken) {
+                    // 使用保存的Token自动登录
+                    userToken = savedToken;
+                    document.getElementById('login-section').classList.add('hidden');
+                    document.getElementById('main-content').classList.remove('hidden');
+                    
+                    // 自动查询所有藏品
+                    setTimeout(() => {
+                        showAllGoods();
+                    }, 500);
+                    
+                    // 启动自动刷新
+                    startAutoRefresh();
+                } else {
+                    // 没有保存的Token，显示登录界面
+                    document.getElementById('login-section').classList.remove('hidden');
+                    document.getElementById('main-content').classList.add('hidden');
+                }
+                
+                // 清空搜索输入框
+                document.getElementById('search-keyword-input').value = '';
+                
+                // 重置变量
+                currentGoodsId = "";
+                marketGoodsList = [];
+                isGoodsListLoaded = false;
+                isQueryingAllGoods = false;
+                
+                // 停止自动刷新
+                stopAutoRefresh();
+            }
+            
+            // 事件绑定
+            document.addEventListener('DOMContentLoaded', function() {
+                init();
+                
+                // 登录功能（使用平台Token）
+                document.getElementById('login-btn').addEventListener('click', loginWithPlatformToken);
+                document.getElementById('platform-token-input').addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') loginWithPlatformToken();
+                });
+                
+                // 其他功能
+                document.getElementById('refresh-btn').addEventListener('click', fetchRealData);
+                document.getElementById('search-goods-btn').addEventListener('click', searchGoods);
+                document.getElementById('all-goods-btn').addEventListener('click', showAllGoods);
+                document.getElementById('view-transaction-btn').addEventListener('click', viewTransaction);
+                
+                // 停止查询按钮
+                document.getElementById('stop-query-btn').addEventListener('click', stopQueryAllGoods);
+                
+                // 搜索关键词输入框回车事件
+                document.getElementById('search-keyword-input').addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') searchGoods();
+                });
+                
+                // 下拉框选择事件
+                document.getElementById('goods-dropdown').addEventListener('change', handleGoodsSelect);
+                
+                // 自动刷新开关
+                document.getElementById('auto-refresh-toggle').addEventListener('change', function() {
+                    autoRefreshEnabled = this.checked;
+                    if (autoRefreshEnabled) {
+                        startAutoRefresh();
+                        showNotification('已开启自动刷新');
+                    } else {
+                        stopAutoRefresh();
+                        showNotification('已关闭自动刷新');
+                    }
+                });
+            });
+        })();
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</body>
+</html>
